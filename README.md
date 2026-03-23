@@ -117,18 +117,3 @@ Cannot find module 'express'
 ```bash
 npm install
 ```
-
----
-
-### Problemas com o arquivo `.env`
-
-**Erro:** Variáveis de ambiente não carregadas ou indefinidas.
-
-**Solução:**
-- Verifique se o arquivo `.env` existe na raiz do projeto.
-- Certifique-se de que o arquivo não tem erros de formatação (sem espaços ao redor do `=`).
-- Exemplo de formato correto:
-
-```env
-NOME_DA_VARIAVEL=valor
-```
