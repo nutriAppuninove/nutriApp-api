@@ -1,5 +1,7 @@
 const { Router } = require("express");
 const { DataUserDto } = require("../dto/dataUserDto");
+const userDataRepository = require("../repository/userDataRepository");
+
 const router = Router();
 
 // Storage temporário em memória
@@ -18,6 +20,9 @@ router.post("/insert/post", (req, res) => {
   }
 
   userData = dto;
+  userDataRepository.save(dto).catch((err) => {
+    console.error("Erro ao salvar no banco:", err);
+  });
   res.status(200).json({ message: "Dados recebidos com sucesso", data: dto });
 });
 
