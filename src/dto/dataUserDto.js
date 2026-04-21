@@ -7,6 +7,7 @@ class DataUserDto {
     isConsomeAlimentosCaloricos,
     pesoAlvo,
     isPraticaAtividadeFisica,
+    objetivo,
   }) {
     this.peso = peso;
     this.altura = altura;
@@ -15,6 +16,7 @@ class DataUserDto {
     this.isConsomeAlimentosCaloricos = isConsomeAlimentosCaloricos;
     this.pesoAlvo = pesoAlvo;
     this.isPraticaAtividadeFisica = isPraticaAtividadeFisica;
+    this.objetivo = objetivo;
   }
 }
 
