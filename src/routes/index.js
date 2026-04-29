@@ -1,67 +1,21 @@
 const { Router } = require("express");
-const { DataUserDto } = require("../dto/dataUserDto");
-const userDataRepository = require("../repository/userDataRepository");
+const controllers = require("../controllers");
 
 const router = Router();
 
-// Storage temporário em memória
-let userData = null;
+// Form (Home)
+router.post("/insert/post", controllers.form.submit);
+router.get("/result/get", controllers.form.getResult);
 
-// Post - Salva informações do Formulário
-router.post("/insert/post", (req, res) => {
-  let dto;
+// User
+router.get("/user/profile", controllers.user.getProfile);
+router.get("/user/:id", controllers.user.getById);
 
-  try {
-    dto = new DataUserDto(req.body);
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Erro ao processar os dados", error: error.message });
-  }
+// Auth
+router.post("/auth/register", controllers.auth.register);
+router.post("/auth/login", controllers.auth.login);
 
-  userData = dto;
-  userDataRepository.save(dto).catch((err) => {
-    console.error("Erro ao salvar no banco:", err);
-  });
-  res.status(200).json({ message: "Dados recebidos com sucesso", data: dto });
-});
-
-// Get - Calcula e retorna
-router.get("/result/get", (req, res) => {
-  if (!userData) {
-    return res
-      .status(404)
-      .json({ message: "Nenhum dado encontrado. Envie os dados primeiro." });
-  }
-
-  const { peso, altura, pesoAlvo } = userData;
-  const alturaEmMetros = altura > 10 ? altura / 100 : altura;
-
-  const imc = peso / (alturaEmMetros * alturaEmMetros);
-  const imcAlvo = pesoAlvo / (alturaEmMetros * alturaEmMetros);
-
-  const classificarIMC = (valor) => {
-    if (valor < 18.5) return "Abaixo do peso";
-    if (valor < 25) return "Peso normal";
-    if (valor < 30) return "Sobrepeso";
-    if (valor < 35) return "Obesidade Grau I";
-    if (valor < 40) return "Obesidade Grau II";
-    return "Obesidade Grau III";
-  };
-
-  res.status(200).json({
-    imc: {
-      valor: parseFloat(imc.toFixed(2)),
-      classificacao: classificarIMC(imc),
-    },
-    imcAlvo: {
-      valor: parseFloat(imcAlvo.toFixed(2)),
-      classificacao: classificarIMC(imcAlvo),
-    },
-    dados: userData,
-  });
-});
-
+// Health
 router.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });

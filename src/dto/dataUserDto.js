@@ -1,22 +1,9 @@
 class DataUserDto {
-  constructor({
-    peso,
-    altura,
-    idade,
-    quantidadeDeRefeicaoNoDia,
-    isConsomeAlimentosCaloricos,
-    pesoAlvo,
-    isPraticaAtividadeFisica,
-    objetivo,
-  }) {
+  constructor({ peso, altura, idade, frequencia }) {
     this.peso = peso;
     this.altura = altura;
     this.idade = idade;
-    this.quantidadeDeRefeicaoNoDia = quantidadeDeRefeicaoNoDia;
-    this.isConsomeAlimentosCaloricos = isConsomeAlimentosCaloricos;
-    this.pesoAlvo = pesoAlvo;
-    this.isPraticaAtividadeFisica = isPraticaAtividadeFisica;
-    this.objetivo = objetivo;
+    this.frequencia = frequencia;
   }
 }
 
