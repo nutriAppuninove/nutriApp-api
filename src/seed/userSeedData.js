@@ -1,27 +1,56 @@
 require("dotenv").config();
 
 const AppDataSource = require("../lib/dataSource");
+const { User } = require("../entities/User");
 const { Analise } = require("../entities/Analise");
+
+const usuarios = [
+  { nome: "Lucas Oliveira", email: "lucas@email.com", senha: "123456", idade: 25 },
+  { nome: "Ana Paula",      email: "ana@email.com",   senha: "123456", idade: 30 },
+  { nome: "Carlos Souza",   email: "carlos@email.com", senha: "123456", idade: 22 },
+];
+
+const aleatorio = (min, max, casas = 1) =>
+  Number((Math.random() * (max - min) + min).toFixed(casas));
 
 const seed = async () => {
   await AppDataSource.initialize();
 
-  const repo = AppDataSource.getRepository(Analise);
+  const userRepo    = AppDataSource.getRepository(User);
+  const analiseRepo = AppDataSource.getRepository(Analise);
 
-  const mockData = [];
+  await AppDataSource.query(`TRUNCATE TABLE analises, users CASCADE`);
+  console.log("Tabelas limpas.");
 
-  for (let i = 0; i < 3000; i++) {
-    mockData.push({
-      peso: Number((Math.random() * 40 + 50).toFixed(1)),
-      altura: Number((Math.random() * 30 + 150).toFixed(1)),
-      idade: Math.floor(Math.random() * 40) + 18,
-      frequencia: Math.floor(Math.random() * 7) + 1,
-    });
+  // Cria usuários
+  const usuariosSalvos = [];
+  for (const dados of usuarios) {
+    // Evita duplicata caso a seed rode sem limpar
+    let user = await userRepo.findOne({ where: { email: dados.email } });
+    if (!user) {
+      user = await userRepo.save(dados);
+      console.log(`Usuário criado: ${user.nome} (${user.id})`);
+    }
+    usuariosSalvos.push(user);
   }
 
-  await repo.save(mockData);
+  // Cria 10 análises por usuário
+  const analises = [];
+  for (const user of usuariosSalvos) {
+    for (let i = 0; i < 10; i++) {
+      analises.push({
+        peso:      aleatorio(50, 120),
+        altura:    aleatorio(1.50, 1.95, 2),
+        idade:     user.idade ?? aleatorio(18, 60, 0),
+        frequencia: Math.floor(Math.random() * 7) + 1,
+        userId:    user.id,
+      });
+    }
+  }
 
-  console.log("Seed concluído com 3000 registros!");
+  await analiseRepo.save(analises);
+  console.log(`Seed concluído: ${usuariosSalvos.length} usuários e ${analises.length} análises criadas.`);
+
   process.exit(0);
 };
 
