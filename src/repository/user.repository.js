@@ -18,4 +18,11 @@ const findByEmail = async (email) => {
   return await getRepo().findOne({ where: { email } });
 };
 
-module.exports = { save, findById, findByEmail };
+const findAllByUser = async (userId) => {
+  return await getRepo().find({
+    where: { id: userId },
+    order: { createdAt: "DESC" },
+  });
+};
+
+module.exports = { save, findById, findByEmail, findAllByUser };

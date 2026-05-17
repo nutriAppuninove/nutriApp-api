@@ -9,6 +9,7 @@ router.get("/result/get", controllers.form.getResult);
 
 // User
 router.get("/user/profile", controllers.user.getProfile);
+router.get("/user/history/:id", controllers.user.getHistory);
 router.get("/user/:id", controllers.user.getById);
 
 // Auth

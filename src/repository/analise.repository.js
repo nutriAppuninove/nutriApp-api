@@ -8,17 +8,16 @@ const save = async (data) => {
 };
 
 const findLatest = async (userId = null) => {
-  const where = userId ? { user: { id: userId } } : {};
+  const where = userId ? { userId } : {};
   return await getRepo().findOne({
     where,
     order: { createdAt: "DESC" },
-    relations: ["user"],
   });
 };
 
 const findAllByUser = async (userId) => {
   return await getRepo().find({
-    where: { user: { id: userId } },
+    where: { userId },
     order: { createdAt: "DESC" },
   });
 };

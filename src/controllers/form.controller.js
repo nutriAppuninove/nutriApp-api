@@ -15,11 +15,26 @@ const submit = async (req, res) => {
       .json({ message: "Erro ao processar os dados", error: error.message });
   }
 
+  if (dto.peso == null || dto.altura == null || dto.idade == null) {
+    return res
+      .status(400)
+      .json({
+        message:
+          "peso, altura e idade são obrigatórios e devem ser números válidos",
+      });
+  }
+
   lastSubmission = dto;
 
-  analiseRepository.save(dto).catch((err) => {
-    console.error("Erro ao salvar análise:", err);
-  });
+  const dadosParaSalvar = {
+    peso: dto.peso,
+    altura: dto.altura,
+    idade: dto.idade,
+    frequencia: dto.frequencia,
+    ...(dto.userId ? { userId: dto.userId, user: { id: dto.userId } } : {}),
+  };
+
+  analiseRepository.save(dadosParaSalvar);
 
   res.status(200).json({ message: "Dados recebidos com sucesso", data: dto });
 };
