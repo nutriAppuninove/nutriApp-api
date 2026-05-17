@@ -8,7 +8,7 @@ const AppDataSource = new DataSource({
   password: String(process.env.DB_PASS),
   database: process.env.DB_NAME,
   synchronize: true,
-  logging: false,
+  logging: true,
   entities: ["src/entities/*.js"],
 });
 

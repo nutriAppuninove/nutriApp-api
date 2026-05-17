@@ -31,6 +31,25 @@ const getProfile = async (req, res) => {
   }
 };
 
+const getHistory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await userRepository.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    const analises = await analiseRepository.findAllByUser(id);
+
+    res.status(200).json(analises);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Erro ao buscar histórico", error: error.message });
+  }
+};
+
 // Retorna um usuário pelo id da rota com a lista completa de análises.
 const getById = async (req, res) => {
   try {
@@ -46,4 +65,4 @@ const getById = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, getById };
+module.exports = { getProfile, getById, getHistory };

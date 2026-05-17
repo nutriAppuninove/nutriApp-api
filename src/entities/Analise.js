@@ -11,6 +11,8 @@ module.exports.Analise = new EntitySchema({
     idade: { type: "int" },
     frequencia: { type: "int", nullable: true },
 
+    userId: { type: "uuid", nullable: true },
+
     createdAt: { type: Date, createDate: true },
   },
   relations: {
