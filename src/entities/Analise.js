@@ -7,7 +7,7 @@ module.exports.Analise = new EntitySchema({
     {
       name: "idx_analises_user_created",
       columns: ["userId", "createdAt"],
-    }
+    },
   ],
   columns: {
     id: { type: "uuid", primary: true, generated: "uuid" },

@@ -35,7 +35,7 @@ const calcularResultado = async (userId, dadosFormulario) => {
     if (dadosBanco) {
       contexto = {
         idade: dadosBanco.user?.idade ?? idade,
-        pesoAtual: dadosBanco.user?.pesoAtual ?? peso,
+        pesoAtual: peso,
         pesoAlvo: dadosBanco.user?.pesoAlvo ?? null,
         historico: analisarHistorico(dadosBanco.analises),
       };
@@ -51,7 +51,6 @@ const calcularResultado = async (userId, dadosFormulario) => {
     dados: dadosFormulario,
   };
 };
-
 const getLastSubmission = () => lastSubmission;
 
 module.exports = { salvarSubmissao, calcularResultado, getLastSubmission };
