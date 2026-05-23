@@ -10,6 +10,8 @@ module.exports.User = new EntitySchema({
     email: { type: "varchar", unique: true },
     senha: { type: "varchar" },
     idade: { type: "int", nullable: true },
+    pesoAlvo: { type: "float", nullable: true },
+    pesoAtual: { type: "float", nullable: true },
 
     createdAt: { type: Date, createDate: true },
   },
