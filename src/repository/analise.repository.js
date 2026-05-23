@@ -7,6 +7,23 @@ const save = async (data) => {
   return await getRepo().save(data);
 };
 
+const buscarContextoUsuario = async (userId) => {
+  if (!userId) return null;
+
+  const userRepo = AppDataSource.getRepository("User");
+  const analiseRepo = AppDataSource.getRepository("Analise");
+
+  const user = await userRepo.findOne({ where: { id: userId } });
+
+  const analises = await analiseRepo.find({
+    where: { user: { id: userId } },
+    order: { createdAt: "DESC" },
+    take: 10,
+  });
+
+  return { user, analises };
+};
+
 const findLatest = async (userId = null) => {
   const where = userId ? { userId } : {};
   return await getRepo().findOne({
@@ -22,4 +39,4 @@ const findAllByUser = async (userId) => {
   });
 };
 
-module.exports = { save, findLatest, findAllByUser };
+module.exports = { save, findLatest, findAllByUser, buscarContextoUsuario };

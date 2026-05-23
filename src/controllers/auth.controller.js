@@ -3,7 +3,7 @@ const userRepository = require("../repository/user.repository");
 // POST /api/auth/register — cria um novo usuário
 const register = async (req, res) => {
   try {
-    const { nome, email, senha, idade } = req.body;
+    const { nome, email, senha, idade, pesoAlvo, pesoAtual } = req.body;
 
     if (!nome || !email || !senha) {
       return res
@@ -17,13 +17,22 @@ const register = async (req, res) => {
     }
 
     // TODO: aplicar hash na senha (bcrypt) antes de persistir
-    const user = await userRepository.save({ nome, email, senha, idade });
+    const user = await userRepository.save({
+      nome,
+      email,
+      senha,
+      idade,
+      pesoAlvo,
+      pesoAtual,
+    });
 
     res.status(201).json({
       id: user.id,
       nome: user.nome,
       email: user.email,
       idade: user.idade,
+      pesoAlvo: user.pesoAlvo,
+      pesoAtual: user.pesoAtual,
     });
   } catch (error) {
     res.status(500).json({
